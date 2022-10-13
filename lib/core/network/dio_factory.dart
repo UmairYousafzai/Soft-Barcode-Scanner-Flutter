@@ -26,8 +26,9 @@ class DioFactory {
     ..interceptors.add(_prettyInterceptor);
 
    static Future<Dio> getDefaultDio() async {
-    await Preference.ipAddress.then((value) => {_baseUrl = value});
-    defaultDio.options.baseUrl = _baseUrl;
+    // await Preference.ipAddress.then((value) => {_baseUrl = value});
+    // defaultDio.options.baseUrl = _baseUrl;
+    defaultDio.options.baseUrl = "https://easyapitest.thevapehouse.pk";
     return defaultDio;
   }
 }

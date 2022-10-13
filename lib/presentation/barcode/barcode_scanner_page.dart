@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:soft_barcode_scanner/data/dataproviders/shared_preference/preference.dart';
 import 'package:soft_barcode_scanner/presentation/barcode/barcode_bloc.dart';
 import 'package:soft_barcode_scanner/presentation/barcode/barcode_scan_state.dart';
+import 'package:soft_barcode_scanner/presentation/router/app_router.dart';
 import 'package:soft_barcode_scanner/utils/extensions.dart';
 
 import 'barcode_scan_event.dart';
@@ -21,6 +25,33 @@ class BarcodePage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: "#caab50".toColor(),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: Row(
+                    children: const [
+                      Text("Logout"),
+                      Icon(
+                        Icons.login_outlined,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                )
+              ];
+            },
+            onSelected: (value) {
+              Preference.setIsLogin(false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                AppRouter.login,
+                (Route<dynamic> route) => false,
+              );
+            },
+          )
+        ],
       ),
       backgroundColor: "2d2d2d".toColor(),
       body: barcodeCameraSection(),

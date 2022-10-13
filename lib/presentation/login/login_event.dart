@@ -12,4 +12,10 @@ class LoginPasswordChangedEvent extends LoginEvent {
   LoginPasswordChangedEvent({required this.password});
 }
 
+class LoginPasswordShowEvent extends LoginEvent {
+  final bool isShowPassword;
+
+  LoginPasswordShowEvent({required this.isShowPassword});
+}
+
 class LoginCredentialsSubmittedEvent extends LoginEvent {}

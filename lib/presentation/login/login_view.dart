@@ -35,7 +35,8 @@ class LoginPage extends StatelessWidget {
           context.showNegativeSnackBar("Opps,${formStatus.errorMessage}");
         }
         if (state.formStatus is SubmissionSuccess) {
-          Navigator.of(context).pushNamed(AppRouter.barcode);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRouter.barcode, (Route<dynamic> route) => false);
           Preference.setIsLogin(true);
         }
       },
@@ -109,8 +110,9 @@ class LoginPage extends StatelessWidget {
         onChanged: (value) => {
           context
               .read<LoginBloc>()
-              .add(LoginUserNameChangedEvent(userName: value))
+              .add(LoginUserNameChangedEvent(userName: value.trim()))
         },
+        textInputAction: TextInputAction.next,
         keyboardType: TextInputType.name,
         decoration: const InputDecoration(
             prefixIcon: Icon(
@@ -140,12 +142,29 @@ class LoginPage extends StatelessWidget {
               .read<LoginBloc>()
               .add(LoginPasswordChangedEvent(password: value))
         },
-        obscureText: true,
+        obscureText: state.isShowPassword,
         keyboardType: TextInputType.name,
-        decoration: const InputDecoration(
-            prefixIcon: Icon(
+        decoration: InputDecoration(
+            prefixIcon: const Icon(
               Icons.lock,
               color: Colors.grey,
+            ),
+            suffixIcon: IconButton(
+              onPressed: () {
+                context.read<LoginBloc>().add(
+                      LoginPasswordShowEvent(
+                          isShowPassword: state.isShowPassword ? false : true),
+                    );
+              },
+              icon: state.isShowPassword
+                  ? const Icon(
+                      Icons.visibility,
+                      color: Colors.grey,
+                    )
+                  : const Icon(
+                      Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
             ),
             border:
                 OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),

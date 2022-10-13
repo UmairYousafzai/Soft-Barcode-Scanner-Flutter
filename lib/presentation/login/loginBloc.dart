@@ -16,6 +16,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginCredentialsSubmittedEvent>((event, emit) {
       login(event, emit);
     });
+    on<LoginPasswordShowEvent>((event, emit) =>
+        emit(state.copyWith(isShowPassword: event.isShowPassword)));
   }
 
   void login(
